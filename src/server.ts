@@ -3,12 +3,20 @@ import https from 'https';
 import express, { Express } from 'express';
 import routes from './routes/index.route';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger';
 
 const router: Express = express();
 
 router.use(cors({ origin: '*', credentials: process.env.CREDENTIALS === 'true' }));
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
+
+// Swagger documentation
+router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Dattebayo API Documentation',
+}));
 
 router.use('/', routes);
 
